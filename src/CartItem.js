@@ -21,7 +21,24 @@ class CartItem extends React.Component {
 
     // }
     increaseQuantity = ()=>{
-         console.log("this.state", this.state);// arrow function will bind 'this' by default
+        console.log("this.state", this.state);// arrow function will bind 'this' by default
+
+        //  this.state.qty+=1; /// this will increase on qty but only in object but react don't know that's why it will not rerender, we achieve in two way
+         
+        // // 1. setState form 1 -> here in setState we are passing object , // here we are shallow merging with state
+
+        // this.setState({
+        //      qty: this.state.qty + 1
+        // });
+
+       // 2.setState form 2- here in setState we will be using callback fn, callback will recieve state as prevState and will return property's new value and it will be shallow merging with state  and react will rerencer
+         // if we require then prevState then we use form2 otherwise form1
+         this.setState((prevState) =>{
+            return {
+                qty: prevState.qty + 1
+            } 
+         });
+        
 
     }
     render () {
