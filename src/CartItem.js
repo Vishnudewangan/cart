@@ -2,19 +2,6 @@ import React from 'react';
 
 class CartItem extends React.Component {
 
-    constructor(){
-        super(); // it is js thing--> we are extending from parent , so firstly we have call parents constructor 
-
-        this.state={
-            price: 999,
-            title: 'Mobile Phone',
-            qty: 1,
-            img:''
-        }
-        ///// we can also bind in constructor
-          //this.increaseQuantity=this.increaseQuantity(this);
-    }
-
     // increaseQuantity () {
       
     //     console.log("this",this);
@@ -62,7 +49,9 @@ class CartItem extends React.Component {
     
     render () {
           
-        const {price,title,qty} =this.state; // js thing -> object destructuring
+        //const {price,title,qty} =this.state; // js thing -> object destructuring
+         
+        const {price,title,qty} = this.props.product;
 
         return (
           <div className="cart-item">
