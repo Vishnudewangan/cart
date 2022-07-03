@@ -38,9 +38,28 @@ class CartItem extends React.Component {
                 qty: prevState.qty + 1
             } 
          });
+
+         // if we want to increase item by 3 times  then calling setState 3 times will not help
+    }
+         decreaseQuantity = ()=>{
+             
+                  const { qty } =this.state;// destructuring object
+
+                  if(qty===0)
+                  {
+                    return ;
+                  }
+                  // setState form 2 - using prevState
+
+                  this.setState( (prevState) => {
+                     return {
+                        qty : prevState.qty - 1
+                     }
+                  });
+         }
         
 
-    }
+    
     render () {
           
         const {price,title,qty} =this.state; // js thing -> object destructuring
@@ -70,6 +89,7 @@ class CartItem extends React.Component {
                         alt="decrease" 
                         className="action-icons" 
                         src="https://cdn-icons-png.flaticon.com/512/992/992683.png" 
+                        onClick={this.decreaseQuantity}
                     />
                     <img 
                         alt="delete" 
