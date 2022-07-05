@@ -90,6 +90,7 @@ class App extends React.Component  {
 
       products.map((product)=>{
         cartTotal+= product.qty * product.price;
+        return '';
       });
 
       return cartTotal;
