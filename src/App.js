@@ -15,6 +15,7 @@ class App extends React.Component  {
             products :[],
             loading: true    
         }
+        this.db = firebase.firestore();
     }
   
     componentDidMount () {
@@ -129,17 +130,36 @@ class App extends React.Component  {
 
       return cartTotal;
     }
+
+    addProduct = () =>{
+       this.db
+         .collection('products')
+         .add({
+           img :'',
+           price: 999,
+           qty:3,
+           title: 'washing machine'
+         })
+         .then((docRef) =>{
+           console.log('Product has been added',docRef);
+         })
+         .catch((error) => {
+          console.log('Error: ',error);
+         })
+    }
   render () {
     const { products, loading } =this.state;
     return (
       <div className="App">
         <Navbar  count={this.getCartCount()} />
+        <button onClick={this.addProduct} style={{ padding: 20, fontSize: 20}}>Add a Product</button>
         <Cart 
          products ={products}
          onIncreaseQuantity = {this.handleIncreaseQuantity}
          onDecreaseQuantity = {this.handleDecreaseQuantity}
          onDeleteProduct = {this.handleDeleteProduct}
         />
+
          {loading && <h1>Loading Products...</h1>}  {/*// conditional rendering */}
         <div style={ {padding: 10, fontSize: 20} }>TOTAL: {this.getCartTotal()} </div>
       </div>
