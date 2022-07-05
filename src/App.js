@@ -1,36 +1,70 @@
 import React from 'react';
 import Cart from './Cart'; 
 import Navbar from './Navbar';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore'
+
+
+
 
 class App extends React.Component  {
     
       constructor () {
         super();
         this.state = {
-            products :[
-                {
-                    price:99,
-                    title: 'watch',
-                    qty: 1,
-                    img: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=388&q=80',
-                    id:1
-                },
-                {
-                    price:999,
-                    title: 'Mobile Phone',
-                    qty: 10,
-                    img: 'https://images.unsplash.com/photo-1520923642038-b4259acecbd7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2019&q=80',
-                    id:2
-                },
-                {
-                    price:999,
-                    title: 'Laptop',
-                    qty: 5,
-                    img: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2020&q=80',
-                    id:3
-                }
-            ]
+            products :[],
+            loading: true    
         }
+    }
+  
+    componentDidMount () {
+      // firebase
+      //   .firestore()
+      //   .collection('products')
+      //   .get()
+      //   .then((snapshot) => {
+      //     console.log(snapshot);
+
+      //     snapshot.docs.map((doc) =>{
+      //       console.log(doc.data());
+      //     });
+
+      //     const products = snapshot.docs.map((doc) =>{
+      //      const data =doc.data();
+
+      //        data['id'] = doc.id;
+      //       return data;
+      //     })
+
+      //     this.setState({
+      //       products:products,
+      //       loading:false
+      //     })
+      //   })
+
+      firebase
+      .firestore()
+      .collection('products')
+      .onSnapshot((snapshot) =>{
+        console.log(snapshot);
+      
+        snapshot.docs.map((doc) =>{
+          console.log(doc.data());
+        });
+
+        const products = snapshot.docs.map((doc) =>{
+         const data =doc.data();
+
+           data['id'] = doc.id;
+          return data;
+        })
+
+        this.setState({
+          products:products,
+          loading:false
+        })
+      }) 
+      
     }
       
     handleIncreaseQuantity = (product) =>{
@@ -96,7 +130,7 @@ class App extends React.Component  {
       return cartTotal;
     }
   render () {
-    const { products } =this.state;
+    const { products, loading } =this.state;
     return (
       <div className="App">
         <Navbar  count={this.getCartCount()} />
@@ -106,6 +140,7 @@ class App extends React.Component  {
          onDecreaseQuantity = {this.handleDecreaseQuantity}
          onDeleteProduct = {this.handleDeleteProduct}
         />
+         {loading && <h1>Loading Products...</h1>}  {/*// conditional rendering */}
         <div style={ {padding: 10, fontSize: 20} }>TOTAL: {this.getCartTotal()} </div>
       </div>
     );
